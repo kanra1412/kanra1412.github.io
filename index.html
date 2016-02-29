@@ -1,6 +1,57 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type"></meta>
+	<title>hello</title>
+	<script type="text/javascript">
+	window.onload=function(){
+		var canvas=document.getElementById("myCanvas");
+		canvas.width=document.body.clientWidth;
+		canvas.height=window.screen.availHeight-document.body.clientHeight;
+		function Ball(pos, vel){
+			this.posX = pos.X;
+			this.posY = pos.Y;
+			this.velX = vel.X;
+			this.velY = vel.Y;
+			this.radius = 15;
+		}
+		var ball = new Ball({X:canvas.offsetLeft, Y:canvas.offsetTop}, {X:parseInt(10*Math.random()), Y:parseInt(10*Math.random())});
+		function draw(){
+			var cxt = document.getElementById("myCanvas").getContext("2d");
+			cxt.clearRect(0,0,canvas.width,canvas.height);
+
+			update_ball_pos();
+
+			cxt.fillStyle = "#ff0000";
+            cxt.beginPath();
+            cxt.arc(ball.posX, ball.posY, ball.radius, 0, Math.PI*2, true);
+            cxt.closePath();
+            cxt.fill();
+			window.requestAnimationFrame(draw);
+		}
+		function update_ball_pos(){
+			if(ball.posX+ball.velX <= 0 
+				|| ball.posX+ball.velX >= canvas.offsetWidth){
+				ball.velX=-ball.velX;
+			}
+			else if(ball.posY+ball.velY <= 0 
+				|| ball.posY+ball.velY >= canvas.offsetHeight){
+				ball.velY=-ball.velY;
+			}
+			ball.posX += ball.velX;
+			ball.posY += ball.velY;
+		}
+
+		draw();
+	}
+	</script>
+	<link rel="stylesheet" type="text/css" href="style.css"></link>
+</head>
 <body>
-<h1>Hello World</h1>
+	<h1>Hello World</h1>
+	<hr />
+	<div>
+		<canvas id="myCanvas">Your browser does not support the canvas element.</canvas>
+	</div>
 </body>
 </html>
